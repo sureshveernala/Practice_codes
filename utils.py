@@ -27,11 +27,11 @@ def creating_objects(list_of_classes = list_of_classes,min_value=0,max_value = 5
                 elif eval(f"{class_name}")._meta.get_field(f"{k}").get_internal_type() == 'DateField':
                     dict_of_attr[k] = f'200{i}-0{i+1}-0{i+2}'
                 elif eval(f"{class_name}")._meta.get_field(f"{k}").get_internal_type() == 'OneToOneField':
-                    class_index = lower_classes.index(eval(f"{class_name}.{k}").__dict__['field'].__dict__['name'])
-                    dict_of_attr[k] = creating_objects([original_list_of_classes[class_index]],min_value=i,max_value=i+1)[0].id
+                    # class_index = lower_classes.index(eval(f"{class_name}.{k}").__dict__['field'].__dict__['name'])
+                    dict_of_attr[k] = creating_objects([eval(f"{class_name}.{k}").field.remote_field.model.__name__ ],min_value=i,max_value=i+1)[0].id
                 elif eval(f"{class_name}")._meta.get_field(f"{k}").get_internal_type() == 'ForeignKey':
-                    class_index = lower_classes.index(eval(f"{class_name}.{k}").__dict__['field'].__dict__['name'])
-                    dict_of_attr[k] = creating_objects([original_list_of_classes[class_index]],min_value=i,max_value=i+1)[0].id
+                    # class_index = lower_classes.index(eval(f"{class_name}.{k}").__dict__['field'].__dict__['name'])
+                    dict_of_attr[k] = creating_objects([eval(f"{class_name}.{k}").field.remote_field.model.__name__ ],min_value=i,max_value=i+1)[0].id
             list_of_objects.append(eval(f'{class_name}.objects.create(**{dict_of_attr})'))
     return list_of_objects
 
