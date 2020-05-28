@@ -1,0 +1,500 @@
+{
+    "swagger": "2.0",
+    "host": "localhost:8080",
+    "basePath": "/api/content_management_portal/",
+    "info": {
+        "version": "1.0.0",
+        "title": "Content Management Portal",
+        "description": "API for Content Management Portal"
+    },
+    "schemes": [
+        "https",
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "securityDefinitions": {
+        "oauth": {
+            "tokenUrl": "http://auth.ibtspl.com/oauth2/",
+            "flow": "password",
+            "scopes": {
+                "read": "read users",
+                "write": "create users",
+                "update": "update users",
+                "delete": "delete users",
+                "superuser": "super user permission"
+            },
+            "type": "oauth2"
+        }
+    },
+    "definitions": {
+        "Description": {
+            "type": "object",
+            "properties": {
+                "content": {
+                    "type": "string"
+                },
+                "content_type": {
+                    "type": "string",
+                    "enum": [
+                        "Text",
+                        "HTML",
+                        "Markdown"
+                    ]
+                }
+            },
+            "required": [
+                "content",
+                "content_type"
+            ]
+        },
+        "QuestionId": {
+            "type": "object",
+            "properties": {
+                "question_id": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            }
+        },
+        "CodingQuestionStatement": {
+            "type": "object",
+            "properties": {
+                "question_id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "short_text": {
+                    "type": "string"
+                },
+                "problem_description": {
+                    "$ref": "#/definitions/Description"
+                }
+            },
+            "required": [
+                "short_text",
+                "problem_description"
+            ]
+        },
+        "CodingQuestionEditor": {
+            "type": "object",
+            "properties": {
+                "language": {
+                    "type": "string",
+                    "enum": [
+                        "C",
+                        "Python",
+                        "Java"
+                    ]
+                },
+                "solution_content": {
+                    "type": "string"
+                },
+                "file_name": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "language",
+                "solution_content",
+                "file_name"
+            ]
+        },
+        "CodingQuestionRoughSolutionList": {
+            "type": "array",
+            "items": {
+                "allOf": [{
+                        "$ref": "#/definitions/CodingQuestionEditor"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "rough_solution_id": {
+                                "type": "integer",
+                                "format": "int64"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "CodingQuestionRoughSolutionResponseList": {
+            "type": "array",
+            "items": {
+                "allOf": [{
+                        "$ref": "#/definitions/CodingQuestionEditor"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "rough_solution_id": {
+                                "type": "integer",
+                                "format": "int64"
+                            },
+                            "question_id": {
+                                "type": "integer",
+                                "format": "int64"
+                            }
+                        },
+                        "required": [
+                            "rough_solution_id",
+                            "question_id"
+                        ]
+                    }
+                ]
+            }
+        },
+        "CodingPrefilledCodeList": {
+            "type": "array",
+            "items": {
+                "allOf": [{
+                        "$ref": "#/definitions/CodingQuestionEditor"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "prefilled_code_id": {
+                                "type": "integer",
+                                "format": "int64"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "CodingQuestionPrefilledCodeResponseList": {
+            "type": "array",
+            "items": {
+                "allOf": [{
+                        "$ref": "#/definitions/CodingQuestionEditor"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "prefilled_code_id": {
+                                "type": "integer",
+                                "format": "int64"
+                            },
+                            "question_id": {
+                                "type": "integer",
+                                "format": "int64"
+                            }
+                        },
+                        "required": [
+                            "prefilled_code_id",
+                            "question_id"
+                        ]
+                    }
+                ]
+            }
+        },
+        "CodingQuestionCleanSolutionList": {
+            "type": "array",
+            "items": {
+                "allOf": [{
+                        "$ref": "#/definitions/CodingQuestionEditor"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "clean_solution_id": {
+                                "type": "integer",
+                                "format": "int64"
+                            }
+                        }
+                    }
+                ]
+            }
+        },
+        "CodingQuestionCleanSolutionResponseList": {
+            "type": "array",
+            "items": {
+                "allOf": [{
+                        "$ref": "#/definitions/CodingQuestionEditor"
+                    },
+                    {
+                        "type": "object",
+                        "properties": {
+                            "clean_solution_id": {
+                                "type": "integer",
+                                "format": "int64"
+                            },
+                            "question_id": {
+                                "type": "integer",
+                                "format": "int64"
+                            }
+                        },
+                        "required": [
+                            "clean_solution_id",
+                            "question_id"
+                        ]
+                    }
+                ]
+            }
+        },
+        "CodingQuestionTestCases": {
+            "type": "object",
+            "properties": {
+                "test_case_id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "test_case_number": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "input": {
+                    "type": "string"
+                },
+                "output": {
+                    "type": "string"
+                },
+                "score": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "is_hidden": {
+                    "type": "boolean"
+                }
+            },
+            "required": [
+                "test_case_number",
+                "input",
+                "output",
+                "score",
+                "is_hidden"
+            ]
+        },
+        "CodingQuestionSolutionApproach": {
+            "type": "object",
+            "properties": {
+                "solution_approach_id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "$ref": "#/definitions/Description"
+                },
+                "complexity_analysis": {
+                    "$ref": "#/definitions/Description"
+                }
+            },
+            "required": [
+                "title",
+                "description",
+                "complexity_analysis"
+            ]
+        },
+        "CodingQuestionHints": {
+            "type": "object",
+            "properties": {
+                "hint_id": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "hint_number": {
+                    "type": "integer",
+                    "format": "int64"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "description": {
+                    "$ref": "#/definitions/Description"
+                },
+                "order": {
+                    "type": "integer",
+                    "format": "int64"
+                }
+            },
+            "required": [
+                "hint_number",
+                "title",
+                "description",
+                "order"
+            ]
+        }
+    },
+    "parameters": {
+        "QuestionIdParameter": {
+            "name": "question_id",
+            "in": "path",
+            "description": "id of the question.",
+            "type": "integer",
+            "format": "int64",
+            "required": true
+        },
+        "RoughSolutionIdParameter": {
+            "name": "rough_solution_id",
+            "in": "path",
+            "description": "id of the rough solution.",
+            "type": "integer",
+            "format": "int64",
+            "required": true
+        },
+        "PrefilledCodeIdParameter": {
+            "name": "prefilled_code_id",
+            "in": "path",
+            "description": "id of the prefilled code.",
+            "type": "integer",
+            "format": "int64",
+            "required": true
+        },
+        "CreateCodingQuestionStatementParameter": {
+            "name": "create_coding_question_statement",
+            "in": "body",
+            "description": "data required to create the statement of the coding question",
+            "schema": {
+                "$ref": "#/definitions/CodingQuestionStatement"
+            }
+        },
+        "CreateCodingQuestionRoughSolutionParameter": {
+            "name": "create_coding_question_rough_solution",
+            "in": "body",
+            "description": "data required to create the rough solution of the coding question",
+            "schema": {
+                "$ref": "#/definitions/CodingQuestionRoughSolutionList"
+            }
+        },
+        "CreateCodingQuestionTestCasesParameter": {
+            "name": "create_coding_question_test_cases",
+            "in": "body",
+            "description": "data required to create the test cases of the coding question",
+            "schema": {
+                "$ref": "#/definitions/CodingQuestionTestCases"
+            }
+        },
+        "CreateCodingQuestionPrefilledCodeParameter": {
+            "name": "create_coding_question_prefilled_code",
+            "in": "body",
+            "description": "data required to create the prefilled code of the coding question",
+            "schema": {
+                "$ref": "#/definitions/CodingPrefilledCodeList"
+            }
+        },
+        "CreateCodingQuestionSolutionApproachParameter": {
+            "name": "create_coding_question_solution_approach",
+            "in": "body",
+            "description": "data required to create solution approach of the coding question",
+            "schema": {
+                "$ref": "#/definitions/CodingQuestionSolutionApproach"
+            }
+        },
+        "CreateCodingQuestionCleanSolutionParameter": {
+            "name": "create_coding_question_clean_solution",
+            "in": "body",
+            "description": "data required to create clean solution of the coding question",
+            "schema": {
+                "$ref": "#/definitions/CodingQuestionCleanSolutionList"
+            }
+        },
+        "CreateCodingQuestionHintsParameter": {
+            "name": "create_coding_question_hints",
+            "in": "body",
+            "description": "data required to create hints of the coding question",
+            "schema": {
+                "$ref": "#/definitions/CodingQuestionHints"
+            }
+        }
+    },
+    "responses": {
+        "CreateCodingQuestionRoughSolutionResponse": {
+            "description": "Created Rough Solution for the question and return RoughSolutionsDetails.",
+            "schema": {
+                "$ref": "#/definitions/CodingQuestionRoughSolutionResponseList"
+            }
+        },
+        "CreateCodingQuestionPrefilledCodeResponse": {
+            "description": "Created Prefilled Code for the question and return PrefilledCodesDetails.",
+            "schema": {
+                "$ref": "#/definitions/CodingQuestionPrefilledCodeResponseList"
+            }
+        },
+        "CreateCodingQuestionCleanResponse": {
+            "description": "Created Clean Solution for the question and return CleanSolutinsDetails.",
+            "schema": {
+                "$ref": "#/definitions/CodingQuestionCleanSolutionResponseList"
+            }
+        }
+    },
+    "paths": {
+        "/coding_questions/statement/v1/": {
+            "post": {
+                "operationId": "create_coding_question_statement",
+                "summary": "Create Statement for the coding question",
+                "description": "Creates Statement for the coding question",
+                "security": [{
+                    "oauth": [
+                        "superuser"
+                    ]
+                }],
+                "parameters": [{
+                    "$ref": "#/parameters/CreateCodingQuestionStatementParameter"
+                }],
+                "responses": {
+                    "201": {
+                        "description": "Coding Question Statement created",
+                        "schema": {
+                            "$ref": "#/definitions/QuestionId"
+                        }
+                    }
+                }
+            }
+        },
+        "/coding_questions/{question_id}/rough_solutions/v1/": {
+            "post": {
+                "operationId": "create_coding_question_rough_solution",
+                "summary": "Create Rough Solution for the coding question",
+                "description": "Creates Rough Solution for the coding question",
+                "security": [{
+                    "oauth": [
+                        "superuser"
+                    ]
+                }],
+                "parameters": [{
+                        "$ref": "#/parameters/CreateCodingQuestionRoughSolutionParameter"
+                    },
+                    {
+                        "$ref": "#/parameters/QuestionIdParameter"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "$ref": "#/responses/CreateCodingQuestionRoughSolutionResponse"
+                    }
+                }
+            }
+        },
+        "/coding_questions/{question_id}/rough_solutions/{rough_solution_id}v1/": {
+            "delete": {
+                "operationId": "delete_coding_question_rough_solution",
+                "summary": "To delete Rough Solution for the coding question",
+                "description": "Delete Rough Solution for the given coding question",
+                "security": [{
+                    "oauth": [
+                        "superuser"
+                    ]
+                }],
+                "parameters": [{
+                        "$ref": "#/parameters/QuestionIdParameter"
+                    },
+                    {
+                        "$ref": "#/parameters/RoughSolutionIdParameter"
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Coding Question Rough Solution deleted"
+                    }
+                }
+            }
+        }
+    }
+}
