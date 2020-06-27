@@ -1,0 +1,9 @@
+git config --global core.editor "vim"
+
+export DJANGO_SETTINGS_MODULE=ib_miniprojects_backend.settings.local
+
+export LD_LIBRARY_PATH=/usr/local/lib
+
+ config --global credential.helper store
+
+git log --graph --abbrev-commit --oneline --decorate --date=relative --all
